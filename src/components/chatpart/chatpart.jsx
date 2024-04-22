@@ -11,18 +11,35 @@ const chatPart = (props) => {
     resultData,
     setInput,
     input,
+    prevPrompt,
+    recentResult,
   } = useContext(Context);
   return (
     <div className="w-[50vw] flex flex-col items-center">
       <div className="h-[92%] pt-8 pl-5 pr-5 overflow-auto scroll-smooth">
-        {!showRes ? null : (
+        {recentResult.length > 0 &&
+          prevPrompt.map((prompt, index) => {
+            if (index < prevPrompt.length - 1) {
+              return (
+                <Messages
+                  key={index}
+                  text={prompt}
+                  result={recentResult[index]}
+                  loading={false}
+                  color={color}
+                />
+              );
+            }
+            return null; // Skip rendering for the last index
+          })}
+        {showRes ? (
           <Messages
-            color={color}
-            loading={loading}
             text={recentPrompt}
             result={resultData}
+            loading={loading}
+            color={color}
           />
-        )}
+        ) : null}
       </div>
       <form>
         <input
@@ -37,13 +54,17 @@ const chatPart = (props) => {
             if (e.key === "Enter") {
               e.preventDefault(); // Prevent form submission
               onSent();
+              setInput("");
             }
           }}
           value={input}
         />
         <div
           className="absolute bottom-[3vh] text-[1.5vw] ml-[48vw] cursor-pointer"
-          onClick={() => onSent()}
+          onClick={() => {
+            onSent();
+            setInput("");
+          }}
         >
           ➤
         </div>

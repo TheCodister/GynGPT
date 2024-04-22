@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import runChat from "../config/gemini";
 
 export const Context = createContext();
@@ -6,25 +6,42 @@ export const Context = createContext();
 const ContextProvider = (props) => {
   const [input, setInput] = useState("");
   const [recentPrompt, setRecentPrompt] = useState("");
-  const [prevPromt, setPrevPrompt] = useState([]);
+  const [prevPrompt, setPrevPrompt] = useState([]);
   const [showRes, setShowRes] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState("");
+  const [recentResult, setRecentResult] = useState([]);
 
   const delayPara = (index, nextword) => {
     setTimeout(() => {
       setResultData((prev) => prev + nextword);
-    }, index * 75);
+    }, index * 50);
   };
 
+  // useEffect(() => {
+  //   if (resultData !== "") {
+  //     setRecentResult((prev) => [...prev, resultData]);
+  //   }
+  // }, [resultData]);
+  const newChat = async () => {
+    setLoading(false);
+    setShowRes(false);
+  };
   const onSent = async (message) => {
     setResultData("");
     setLoading(true);
     setShowRes(true);
-    setRecentPrompt(input);
-    const res = await runChat(input);
+    let res;
+    if (message !== undefined) {
+      res = await runChat(message);
+      setRecentPrompt(message);
+    } else {
+      setPrevPrompt((prev) => [...prev, input]);
+      setRecentPrompt(input);
+      res = await runChat(input);
+    }
     let resArray = res.split("**");
-    let newRes;
+    let newRes = "";
     for (let i = 0; i < resArray.length; i++) {
       if (i === 0 || i % 2 !== 1) {
         newRes += resArray[i];
@@ -39,11 +56,11 @@ const ContextProvider = (props) => {
       delayPara(i, nextWord + " ");
     }
     setLoading(false);
-    setInput("");
+    setRecentResult((prev) => [...prev, newRes2]);
   };
 
   const contextValue = {
-    prevPromt,
+    prevPrompt,
     setPrevPrompt,
     onSent,
     setRecentPrompt,
@@ -53,6 +70,9 @@ const ContextProvider = (props) => {
     resultData,
     input,
     setInput,
+    newChat,
+    recentResult,
+    setRecentResult,
   };
   return (
     <Context.Provider value={contextValue}>{props.children}</Context.Provider>
