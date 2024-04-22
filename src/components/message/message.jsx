@@ -9,7 +9,7 @@ const messages = (props) => {
       <div className="flex flex-col items-start mb-10">
         <div className="flex flex-row items-center gap-2">
           <img
-            src="./image/Userlogo.png"
+            src="/image/Userlogo.png"
             className="w-9 h-9 bg-green-950 rounded-full border-white border-[1px]"
           />
           <h1 className="font-semibold">User</h1>
@@ -21,7 +21,7 @@ const messages = (props) => {
       <div className="flex flex-col items-start mb-10">
         <div className="flex flex-row items-center gap-2">
           <img
-            src="./image/Logo1.png"
+            src="/image/Logo1.png"
             className="w-9 h-9 bg-green-950 rounded-full p-1 border-white border-[1px]"
           />
           <h1 className="font-semibold">GynGPT</h1>
