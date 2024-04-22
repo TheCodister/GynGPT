@@ -16,16 +16,20 @@ const theme = createTheme({
     },
   },
 });
-const navbar = () => {
+const navbar = (props) => {
+  const bg = props.background;
   return (
-    <nav className="w-2/12 gap-6 flex flex-col items-center bg-green-950 p-8">
+    <nav
+      className="w-2/12 gap-6 flex flex-col items-center p-8"
+      style={{ backgroundColor: `${bg}` }}
+    >
       <img className="w-34" src="./image/Logo2.png" />
       <ThemeProvider theme={theme}>
         <Button className="w-[13vw]" variant="outlined" color="primary">
           + New Chat
         </Button>
       </ThemeProvider>
-      <h1>Chat history</h1>
+      <h1 className="text-[#00ff22]">Chat history</h1>
     </nav>
   );
 };

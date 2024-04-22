@@ -20,7 +20,7 @@ const startMessage = (props) => {
   const start = props.handleStart;
   const [text] = useTypewriter({
     words: [
-      "Welcome to GynGPT chatbot created by using OpenAI's GPT-3.5 Turbo API. How can I help you today?",
+      `Welcome to GynGPT chatbot\ncreated by using OpenAI's API.\nHow can I help you today?`,
     ],
     loop: 1,
     typeSpeed: 50,
@@ -28,12 +28,10 @@ const startMessage = (props) => {
   });
   return (
     <div className="w-3/5 flex mt-36 items-center text-left flex-col">
-      <h1 className="text-[3.5vw] h-[62vh] leading-relaxed font-medium">
-        <span>{text}</span>
-        <span>
-          <Cursor cursorStyle="|" />
-        </span>
-      </h1>
+      <pre className="text-left w-full text-[4vw] h-[62vh] leading-relaxed font-medium">
+        {text}
+        <Cursor cursorStyle="|" />
+      </pre>
       <ThemeProvider theme={theme}>
         <Button
           className="w-60 h-12"
