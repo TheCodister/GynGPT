@@ -7,6 +7,7 @@ const suggestion = (props) => {
   const handleClick = (suggestion) => {
     setRecentPrompt(suggestion);
     onSent(suggestion);
+    setInput("");
   };
   const suggestions = [
     "What is ReactJS",
@@ -15,7 +16,7 @@ const suggestion = (props) => {
     "What is Relational Database",
   ];
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center mt-8">
       <h1 className="text-[5vw] font-extrabold">
         Hi User
         <br />
@@ -25,7 +26,7 @@ const suggestion = (props) => {
         {suggestions.map((suggestion, index) => {
           return (
             <div
-              className="w-[12em] h-[12em] flex items-center justify-center p-1 cursor-pointer border-solid border-[#00ff22] border-[2px] rounded-lg hover:bg-lime-900"
+              className="w-[12em] h-[10em] flex items-center justify-center p-1 cursor-pointer border-solid border-[#00ff22] border-[2px] rounded-lg hover:bg-stone-500"
               style={{ borderColor: `${color}` }}
               key={index}
               onClick={handleClick.bind(this, suggestion)}

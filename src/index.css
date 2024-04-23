@@ -12,11 +12,11 @@ body {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background-color: #3c4b33;
+  border-radius: 7px;
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 7px;
-  background-color: #eeeeee; /* Set the color of the thumb */
+  background-color: #c2c2c2; /* Set the color of the thumb */
 }
 ::-webkit-scrollbar-thumb:hover {
   background-color: #818181; /* Set the color of the thumb */
@@ -44,5 +44,5 @@ pre {
   width: 45vw;
 }
 a:hover {
-  color: #00ff22;
+  color: #2b06ff;
 }

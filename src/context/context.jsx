@@ -11,12 +11,18 @@ const ContextProvider = (props) => {
   const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState("");
   const [recentResult, setRecentResult] = useState([]);
+  const [start, setStart] = useState(false);
+  const [taskbar, setTaskbar] = useState(false);
+  const [navbackground, setNavBackground] = useState("rgb(5 46 22)");
+  const [background, setBackground] = useState("#3c4b33");
+  const [textcolor, setTextColor] = useState("#00ff22");
+  const [navTextColor, setNavTextColor] = useState("#00ff22");
+  const [stopGen, setStopGen] = useState(false);
 
-  const delayPara = (index, nextword) => {
+  const delayPara = (index, nextword) =>
     setTimeout(() => {
       setResultData((prev) => prev + nextword);
     }, index * 50);
-  };
 
   const newChat = async () => {
     setLoading(false);
@@ -36,16 +42,6 @@ const ContextProvider = (props) => {
       setRecentPrompt(input);
       res = await runChat(input);
     }
-    // let resArray = res.split("**");
-    // let newRes = "";
-    // for (let i = 0; i < resArray.length; i++) {
-    //   if (i === 0 || i % 2 !== 1) {
-    //     newRes += resArray[i];
-    //   } else {
-    //     newRes += "<b>" + resArray[i] + "</b>";
-    //   }
-    // }
-    // let newRes2 = newRes.split("*").join("</br>");
     let formattedResponse = formatResponse(res);
     let newResArray = formattedResponse.split(" ");
     for (let i = 0; i < newResArray.length; i++) {
@@ -59,9 +55,7 @@ const ContextProvider = (props) => {
     // Replace ** with bold tags and * with line breaks
     let newRes = response
       .split("**")
-      .map((part, index) =>
-        index % 2 === 1 ? `<br/><b>${part}</b><br/>` : part
-      )
+      .map((part, index) => (index % 2 === 1 ? `<b>${part}</b>` : part))
       .join("")
       .replace(/\*{1}/g, "</br>");
 
@@ -71,7 +65,7 @@ const ContextProvider = (props) => {
       return `<pre><code>${escapedCode}</code></pre>`;
     });
     newRes = newRes.replace(
-      /\[([^\]]+)\]\((http[^\)]+)\)/g,
+      /\[([^\]]+)\]\((https[^\)]+)\)/g,
       '<a href="$2" target="_blank">$1 ($2)</a>'
     );
     // Format the list items into sections and lists
@@ -102,6 +96,21 @@ const ContextProvider = (props) => {
     newChat,
     recentResult,
     setRecentResult,
+    start,
+    setStart,
+    taskbar,
+    setTaskbar,
+    navbackground,
+    setNavBackground,
+    background,
+    setBackground,
+    textcolor,
+    setTextColor,
+    navTextColor,
+    setNavTextColor,
+    stopGen,
+    setStopGen,
+    delayPara,
   };
   return (
     <Context.Provider value={contextValue}>{props.children}</Context.Provider>

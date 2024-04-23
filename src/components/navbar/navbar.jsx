@@ -2,24 +2,32 @@ import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Context } from "../../context/context";
 import { useContext } from "react";
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#00ff22",
-      // light: will be calculated from palette.primary.main,
-      // dark: will be calculated from palette.primary.main,
-      // contrastText: will be calculated to contrast with palette.primary.main
+const theme = (color) =>
+  createTheme({
+    palette: {
+      primary: {
+        main: color,
+        // light: will be calculated from palette.primary.main,
+        // dark: will be calculated from palette.primary.main,
+        // contrastText: will be calculated to contrast with palette.primary.main
+      },
+      secondary: {
+        main: "#E0C2FF",
+        light: "#F5EBFF",
+        contrastText: "#47008F",
+      },
     },
-    secondary: {
-      main: "#E0C2FF",
-      light: "#F5EBFF",
-      contrastText: "#47008F",
-    },
-  },
-});
+  });
 const navbar = (props) => {
   const bg = props.background;
-  const { onSent, prevPrompt, setRecentPrompt, newChat } = useContext(Context);
+  const {
+    onSent,
+    prevPrompt,
+    setRecentPrompt,
+    newChat,
+    navbackground,
+    navTextColor,
+  } = useContext(Context);
   const loadPrompt = async (prompt) => {
     setRecentPrompt(prompt);
     await onSent(prompt);
@@ -27,10 +35,10 @@ const navbar = (props) => {
   return (
     <nav
       className="w-2/12 gap-6 flex flex-col items-center p-8"
-      style={{ backgroundColor: `${bg}` }}
+      style={{ backgroundColor: `${navbackground}`, color: `${navTextColor}` }}
     >
       <img className="w-34" src="./image/Logo2.png" />
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme(navTextColor)}>
         <Button
           className="w-[13vw]"
           onClick={() => newChat()}
@@ -46,9 +54,10 @@ const navbar = (props) => {
             <div
               key={index}
               onClick={() => loadPrompt(prompt)}
-              className="w-[10vw] h-[5vh] flex items-center p-1 mt-4 cursor-pointer border-solid border-[#00ff22] text-[#00ff22] border-[1px] rounded-lg "
+              className="w-[10vw] h-[5vh] text-[1vw] flex items-center justify-center p-1 mt-4 cursor-pointer border-solid border-[1px] rounded-lg line-clamp-1"
+              style={{ borderColor: `${navTextColor}` }}
             >
-              <p>{prompt.slice(0, 18)}...</p>
+              <p>{prompt.slice(0, 13)}...</p>
             </div>
           );
         })}

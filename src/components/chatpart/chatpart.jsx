@@ -3,6 +3,7 @@ import { Messages, Suggestion } from "..";
 import { Context } from "../../context/context";
 const chatPart = (props) => {
   const color = props.color;
+  const getMessage = props.getMessage;
   const {
     onSent,
     recentPrompt,
@@ -13,6 +14,10 @@ const chatPart = (props) => {
     input,
     prevPrompt,
     recentResult,
+    navTextColor,
+    stopGen,
+    setStopGen,
+    delayPara,
   } = useContext(Context);
   return (
     <div className="w-[50vw] flex flex-col items-center">
@@ -46,7 +51,7 @@ const chatPart = (props) => {
       </div>
       <form>
         <input
-          className="w-[50vw] h-[6vh] rounded-[3vw] p-4 bg-zinc-800 focus:outline-none ring-2 ring-white focus:ring-[#00ff22]"
+          className="w-[50vw] h-[6vh] text-[#fff] rounded-[3vw] p-4 bg-zinc-800 focus:outline-none ring-2 ring-white focus:ring-[#00ff22]"
           placeholder="Ask me anything..."
           type="text"
           onChange={(e) => {
@@ -64,12 +69,21 @@ const chatPart = (props) => {
         />
         <div
           className="absolute bottom-[3vh] text-[1.5vw] ml-[48vw] cursor-pointer"
-          onClick={() => {
-            onSent();
-            setInput("");
-          }}
+          style={{ color: `${navTextColor}` }}
         >
-          ➤
+          {stopGen ? (
+            <p onClick={() => clearTimeout(delayPara)}>⊗</p>
+          ) : (
+            <p
+              onClick={() => {
+                getMessage();
+                onSent();
+                setInput("");
+              }}
+            >
+              ➤
+            </p>
+          )}
         </div>
       </form>
     </div>

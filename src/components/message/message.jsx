@@ -1,9 +1,12 @@
 import BeatLoader from "react-spinners/BeatLoader";
+import { useContext } from "react";
+import { Context } from "../../context/context";
 const messages = (props) => {
   const propmt = props.text;
   const res = props.result;
   const load = props.loading;
   const color = props.color;
+  const { background, setNavBackground, textcolor } = useContext(Context);
   return (
     <div className="w-[50vw]">
       <div className="flex flex-col items-start mb-10">
@@ -30,7 +33,15 @@ const messages = (props) => {
           <BeatLoader className="ml-11" color={color} />
         ) : (
           <div className="ml-11">
-            <p dangerouslySetInnerHTML={{ __html: res }}></p>
+            <pre
+              style={{
+                backgroundColor: `${background}`,
+                fontFamily: `'Montserrat', sans-serif`,
+                color: `${textcolor}`,
+                padding: "0px",
+              }}
+              dangerouslySetInnerHTML={{ __html: res }}
+            ></pre>
           </div>
         )}
       </div>
