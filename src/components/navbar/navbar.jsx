@@ -44,6 +44,7 @@ const navbar = (props) => {
         {prevPrompt.map((prompt, index) => {
           return (
             <div
+              key={index}
               onClick={() => loadPrompt(prompt)}
               className="w-[10vw] h-[5vh] flex items-center p-1 mt-4 cursor-pointer border-solid border-[#00ff22] border-[1px] rounded-lg "
             >

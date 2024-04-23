@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Messages } from "..";
+import { Messages, Suggestion } from "..";
 import { Context } from "../../context/context";
 const chatPart = (props) => {
   const color = props.color;
@@ -17,7 +17,9 @@ const chatPart = (props) => {
   return (
     <div className="w-[50vw] flex flex-col items-center">
       <div className="h-[92%] pt-8 pl-5 pr-5 overflow-auto scroll-smooth">
-        {recentResult.length > 0 &&
+        {!recentResult.length > 0 && !showRes ? (
+          <Suggestion />
+        ) : (
           prevPrompt.map((prompt, index) => {
             if (index < prevPrompt.length - 1) {
               return (
@@ -31,7 +33,8 @@ const chatPart = (props) => {
               );
             }
             return null; // Skip rendering for the last index
-          })}
+          })
+        )}
         {showRes ? (
           <Messages
             text={recentPrompt}

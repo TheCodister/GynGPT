@@ -19,3 +19,14 @@ body {
   border-radius: 7px;
   background-color: #ffffff; /* Set the color of the thumb */
 }
+#root {
+  animation: fadeIn 1.5s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

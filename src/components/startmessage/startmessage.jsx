@@ -28,7 +28,7 @@ const startMessage = (props) => {
   });
   return (
     <div className="w-3/5 flex mt-36 items-center text-left flex-col">
-      <pre className="text-left w-full text-[4vw] h-[62vh] leading-relaxed font-medium">
+      <pre className="text-left w-full text-[4vw] h-[62vh] leading-relaxed font-bold">
         {text}
         <Cursor cursorStyle="|" />
       </pre>
