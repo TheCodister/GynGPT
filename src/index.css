@@ -4,7 +4,6 @@
 body {
   background-color: #3c4b33;
   color: #00ff22;
-  font-family: "Montserrat", sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -17,10 +16,14 @@ body {
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 7px;
-  background-color: #ffffff; /* Set the color of the thumb */
+  background-color: #eeeeee; /* Set the color of the thumb */
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #818181; /* Set the color of the thumb */
 }
 #root {
   animation: fadeIn 1.5s;
+  font-family: "Montserrat", sans-serif;
 }
 @keyframes fadeIn {
   0% {
@@ -29,4 +32,14 @@ body {
   100% {
     opacity: 1;
   }
+}
+code,
+pre {
+  background-color: #0f0f0f; /* Light gray background */ /* Light border for distinction */
+  padding: 8px; /* Padding for visual space */
+  white-space: pre-wrap; /* Ensures that pre-formatted text wraps */
+  color: #00ff22; /* Text color */
+}
+a:hover {
+  color: #00ff22;
 }

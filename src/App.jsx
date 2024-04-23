@@ -53,12 +53,14 @@ function App() {
     >
       {taskbar ? <Navbar background={navbackground} /> : null}
       <div className="flex justify-center w-full">
-        <h1
-          onClick={() => setTaskbar(!taskbar)}
-          className="absolute left-2 cursor-pointer text-3xl text-[#00ff22]"
-        >
-          ⟺
-        </h1>
+        {start ? (
+          <h1
+            onClick={() => setTaskbar(!taskbar)}
+            className="absolute left-2 cursor-pointer text-3xl text-[#00ff22]"
+          >
+            ⟺
+          </h1>
+        ) : null}
         <ButtonGroup
           className="absolute top-2 right-2"
           variant="contained"
@@ -66,7 +68,7 @@ function App() {
           color="success"
         >
           <Button
-            onClick={() => handleBackground("#000000", "#212121", "#00ff22")}
+            onClick={() => handleBackground("#0f0f0f", "#2b2b2b", "#00ff22")}
           >
             ⚫
           </Button>
@@ -78,7 +80,7 @@ function App() {
             🟢
           </Button>
           <Button
-            onClick={() => handleBackground("#000000", "#fff", "#000000")}
+            onClick={() => handleBackground("#0f0f0f", "#eeeeee", "#000000")}
           >
             ⚪️
           </Button>

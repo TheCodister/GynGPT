@@ -18,7 +18,7 @@ const chatPart = (props) => {
     <div className="w-[50vw] flex flex-col items-center">
       <div className="h-[92%] pt-8 pl-5 pr-5 overflow-auto scroll-smooth">
         {!recentResult.length > 0 && !showRes ? (
-          <Suggestion />
+          <Suggestion color={color} />
         ) : (
           prevPrompt.map((prompt, index) => {
             if (index < prevPrompt.length - 1) {
@@ -46,7 +46,7 @@ const chatPart = (props) => {
       </div>
       <form>
         <input
-          className="w-[50vw] h-[6vh] rounded-[3vw] p-4 bg-zinc-800 focus:outline-none ring-white focus: ring focus:ring-[#00ff22]"
+          className="w-[50vw] h-[6vh] rounded-[3vw] p-4 bg-zinc-800 focus:outline-none ring-2 ring-white focus:ring-[#00ff22]"
           placeholder="Ask me anything..."
           type="text"
           onChange={(e) => {
