@@ -68,7 +68,7 @@ const ContextProvider = (props) => {
     // Automatically detect and format code blocks wrapped in triple backticks
     newRes = newRes.replace(/```(.*?)```/gs, (match, code) => {
       const escapedCode = escapeHTML(code);
-      return `<pre"><code>${escapedCode}</code></pre>`;
+      return `<pre><code>${escapedCode}</code></pre>`;
     });
     newRes = newRes.replace(
       /\[([^\]]+)\]\((http[^\)]+)\)/g,

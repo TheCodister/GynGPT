@@ -17,7 +17,7 @@ const chatPart = (props) => {
   return (
     <div className="w-[50vw] flex flex-col items-center">
       <div className="h-[92%] pt-8 pl-5 pr-5 overflow-auto scroll-smooth">
-        {!recentResult.length > 0 && !showRes ? (
+        {!showRes ? (
           <Suggestion color={color} />
         ) : (
           prevPrompt.map((prompt, index) => {

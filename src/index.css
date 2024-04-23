@@ -40,6 +40,9 @@ pre {
   white-space: pre-wrap; /* Ensures that pre-formatted text wraps */
   color: #00ff22; /* Text color */
 }
+pre {
+  width: 45vw;
+}
 a:hover {
   color: #00ff22;
 }
