@@ -19,9 +19,8 @@ const theme = (color) =>
       },
     },
   });
-const startMessage = (props) => {
-  const start = props.handleStart;
-  const { background, textcolor } = useContext(Context);
+const startMessage = () => {
+  const { background, textcolor, handleStart } = useContext(Context);
   const [text] = useTypewriter({
     words: [
       `Welcome to GynGPT chatbot created by using OpenAI's API.\nHow can I help you today?`,
@@ -45,7 +44,7 @@ const startMessage = (props) => {
           size="large"
           variant="contained"
           color="primary"
-          onClick={start}
+          onClick={handleStart}
         >
           Start Prompt
         </Button>

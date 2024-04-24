@@ -6,9 +6,9 @@ const messages = (props) => {
   const res = props.result;
   const load = props.loading;
   const color = props.color;
-  const { background, currentBot, textcolor } = useContext(Context);
+  const { background, currentBot, bot, textcolor } = useContext(Context);
   const handleName = () => {
-    if (currentBot === 0) {
+    if (bot === 0) {
       return " (Gemini-1.0)";
     } else {
       return " (GPT-3.5)";

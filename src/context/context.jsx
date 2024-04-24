@@ -19,8 +19,19 @@ const ContextProvider = (props) => {
   const [navTextColor, setNavTextColor] = useState("#00ff22");
   const [bot, setBot] = useState(0); //0 is Gemini, 1 is GPT-3.5
   const [currentBot, setCurrentBot] = useState(0);
-
   const [message, setMessage] = useState(null);
+
+  const handleStart = () => {
+    setStart(true);
+    setTaskbar(true);
+  };
+
+  const handleBackground = (color1, color2, color3, color4) => {
+    setBackground(color2);
+    setNavBackground(color1);
+    setTextColor(color3);
+    setNavTextColor(color4);
+  };
 
   const delayPara = (index, nextword) =>
     setTimeout(() => {
@@ -31,9 +42,49 @@ const ContextProvider = (props) => {
     setLoading(false);
     setShowRes(false);
   };
+
+  const getMessage = async (message) => {
+    const options = {
+      method: "POST",
+      body: JSON.stringify({
+        message: message === undefined ? input : message,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const response = await fetch(
+        "http://localhost:3000/completions",
+        options
+      );
+      const data = await response.json();
+      let res = data.choices[0].message.content;
+      setResultData("");
+      setLoading(true);
+      setShowRes(true);
+      if (message !== undefined) {
+        setPrevPrompt((prev) => [...prev, message]);
+        setRecentPrompt(message);
+      } else {
+        setPrevPrompt((prev) => [...prev, input]);
+        setRecentPrompt(input);
+      }
+      let formattedResponse = formatResponse(res);
+      let newResArray = formattedResponse.split(" ");
+      for (let i = 0; i < newResArray.length; i++) {
+        const nextWord = newResArray[i];
+        delayPara(i, nextWord + " ");
+      }
+      setLoading(false);
+      setRecentResult((prev) => [...prev, formattedResponse]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const onSent = async (message) => {
     setResultData("");
-    setCurrentBot(0);
     setLoading(true);
     setShowRes(true);
     let res;
@@ -55,6 +106,7 @@ const ContextProvider = (props) => {
     setLoading(false);
     setRecentResult((prev) => [...prev, formattedResponse]);
   };
+
   const formatResponse = (response) => {
     // Replace ** with bold tags and * with line breaks
     let newRes = response
@@ -159,6 +211,9 @@ const ContextProvider = (props) => {
     escapeHTML,
     currentBot,
     setCurrentBot,
+    getMessage,
+    handleBackground,
+    handleStart,
   };
   return (
     <Context.Provider value={contextValue}>{props.children}</Context.Provider>

@@ -1,9 +1,7 @@
 import { useContext } from "react";
 import { Messages, Suggestion } from "..";
 import { Context } from "../../context/context";
-const chatPart = (props) => {
-  const color = props.color;
-  const getMessage = props.getMessage;
+const chatPart = () => {
   const {
     onSent,
     recentPrompt,
@@ -16,15 +14,16 @@ const chatPart = (props) => {
     recentResult,
     navTextColor,
     stopGen,
-    setStopGen,
     delayPara,
     bot,
+    getMessage,
+    textcolor,
   } = useContext(Context);
   return (
     <div className="w-[50vw] flex flex-col items-center">
       <div className="h-[92%] pt-8 pl-5 pr-5 overflow-auto scroll-smooth">
         {!showRes ? (
-          <Suggestion color={color} />
+          <Suggestion color={textcolor} />
         ) : (
           prevPrompt.map((prompt, index) => {
             if (index < prevPrompt.length - 1) {
@@ -34,7 +33,7 @@ const chatPart = (props) => {
                   text={prompt}
                   result={recentResult[index]}
                   loading={false}
-                  color={color}
+                  color={textcolor}
                 />
               );
             }
@@ -46,7 +45,7 @@ const chatPart = (props) => {
             text={recentPrompt}
             result={resultData}
             loading={loading}
-            color={color}
+            color={textcolor}
           />
         ) : null}
       </div>
