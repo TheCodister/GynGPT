@@ -18,8 +18,7 @@ const theme = (color) =>
       },
     },
   });
-const navbar = (props) => {
-  const bg = props.background;
+const navbar = () => {
   const {
     onSent,
     prevPrompt,
@@ -27,11 +26,12 @@ const navbar = (props) => {
     newChat,
     navbackground,
     navTextColor,
+    chatHistory,
   } = useContext(Context);
-  const loadPrompt = async (prompt) => {
-    setRecentPrompt(prompt);
-    await onSent(prompt);
-  };
+  // const loadPrompt = async (chat) => {
+  //   setRecentPrompt(chat.input);
+  //   await onSent(chat.input);
+  // };
   return (
     <nav
       className="w-2/12 gap-6 flex flex-col items-center p-8"
@@ -49,18 +49,26 @@ const navbar = (props) => {
         </Button>
       </ThemeProvider>
       <div>
-        {prevPrompt.map((prompt, index) => {
-          return (
-            <div
-              key={index}
-              onClick={() => loadPrompt(prompt)}
-              className="w-[10vw] h-[5vh] text-[1vw] flex items-center justify-center p-1 mt-4 cursor-pointer border-solid border-[1px] rounded-lg line-clamp-1"
-              style={{ borderColor: `${navTextColor}` }}
-            >
-              <p>{prompt.slice(0, 13)}...</p>
-            </div>
-          );
-        })}
+        {/* {prevPrompt.map((prompt, index) => (
+          <div
+            key={index}
+            onClick={() => loadPrompt(prompt)}
+            className="w-[10vw] h-[5vh] text-[1vw] flex items-center justify-center p-1 mt-4 cursor-pointer border-solid border-[1px] rounded-lg line-clamp-1"
+            style={{ borderColor: `${navTextColor}` }}
+          >
+            <p>{prompt.slice(0, 13)}...</p>
+          </div>
+        ))} */}
+        {/* {chatHistory.map((chat, index) => (
+          <div
+            key={index}
+            onClick={() => loadPrompt(chat)}
+            className="w-[10vw] h-[5vh] text-[1vw] flex items-center justify-center p-1 mt-4 cursor-pointer border-solid border-[1px] rounded-lg line-clamp-1"
+            style={{ borderColor: `${navTextColor}` }}
+          >
+            <p>{chat.input.slice(0, 13)}...</p>
+          </div>
+        ))} */}
       </div>
     </nav>
   );

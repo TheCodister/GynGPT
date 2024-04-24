@@ -1,19 +1,19 @@
 import BeatLoader from "react-spinners/BeatLoader";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Context } from "../../context/context";
 const messages = (props) => {
   const propmt = props.text;
   const res = props.result;
   const load = props.loading;
   const color = props.color;
-  const { background, currentBot, bot, textcolor } = useContext(Context);
-  const handleName = () => {
-    if (bot === 0) {
-      return " (Gemini-1.0)";
-    } else {
-      return " (GPT-3.5)";
-    }
-  };
+  const { background, textcolor } = useContext(Context);
+  // const handleName = () => {
+  //   if (bot === 0) {
+  //     return " (Gemini-1.0)";
+  //   } else {
+  //     return " (GPT-3.5)";
+  //   }
+  // };
   return (
     <div className="w-[50vw]">
       <div className="flex flex-col items-start mb-10">
@@ -34,7 +34,7 @@ const messages = (props) => {
             src="/image/Logo1.png"
             className="w-9 h-9 bg-green-950 rounded-full p-1 border-white border-[1px]"
           />
-          <h1 className="font-semibold">GynGPT{handleName()}</h1>
+          <h1 className="font-semibold">GynGPT</h1>
         </div>
         {load ? (
           <BeatLoader className="ml-11" color={color} />

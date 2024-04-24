@@ -18,8 +18,9 @@ const ContextProvider = (props) => {
   const [textcolor, setTextColor] = useState("#00ff22");
   const [navTextColor, setNavTextColor] = useState("#00ff22");
   const [bot, setBot] = useState(0); //0 is Gemini, 1 is GPT-3.5
-  const [currentBot, setCurrentBot] = useState(0);
   const [message, setMessage] = useState(null);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [stopGenerate, setStopGenerate] = useState(false);
 
   const handleStart = () => {
     setStart(true);
@@ -33,14 +34,31 @@ const ContextProvider = (props) => {
     setNavTextColor(color4);
   };
 
-  const delayPara = (index, nextword) =>
-    setTimeout(() => {
+  const delayPara = (index, nextword, length) => {
+    if (!stopGenerate) {
+      setStopGenerate(true);
+      setTimeout(() => {
+        setResultData((prev) => prev + nextword);
+        if (index === length - 1) {
+          // Last word, setTimeout is done, set stopGenerate to false
+          setStopGenerate(false);
+        }
+      }, index * 50);
+    } else {
       setResultData((prev) => prev + nextword);
-    }, index * 50);
+      console.log("stopGenerate is true");
+      clearTimeout();
+    }
+  };
 
   const newChat = async () => {
     setLoading(false);
     setShowRes(false);
+    setChatHistory((prevHistory) => [
+      ...prevHistory,
+      { input: recentPrompt, output: resultData },
+    ]);
+    setPrevPrompt([]);
   };
 
   const getMessage = async (message) => {
@@ -54,12 +72,6 @@ const ContextProvider = (props) => {
       },
     };
     try {
-      const response = await fetch(
-        "http://localhost:3000/completions",
-        options
-      );
-      const data = await response.json();
-      let res = data.choices[0].message.content;
       setResultData("");
       setLoading(true);
       setShowRes(true);
@@ -70,11 +82,17 @@ const ContextProvider = (props) => {
         setPrevPrompt((prev) => [...prev, input]);
         setRecentPrompt(input);
       }
+      const response = await fetch(
+        "https://gptclone-backend.onrender.com/completions",
+        options
+      );
+      const data = await response.json();
+      let res = data.choices[0].message.content;
       let formattedResponse = formatResponse(res);
       let newResArray = formattedResponse.split(" ");
       for (let i = 0; i < newResArray.length; i++) {
         const nextWord = newResArray[i];
-        delayPara(i, nextWord + " ");
+        delayPara(i, nextWord + " ", newResArray.length);
       }
       setLoading(false);
       setRecentResult((prev) => [...prev, formattedResponse]);
@@ -88,11 +106,14 @@ const ContextProvider = (props) => {
     setLoading(true);
     setShowRes(true);
     let res;
+    let currentInput;
     if (message !== undefined) {
+      currentInput = message;
       setPrevPrompt((prev) => [...prev, message]);
       setRecentPrompt(message);
       res = await runChat(message);
     } else {
+      currentInput = input;
       setPrevPrompt((prev) => [...prev, input]);
       setRecentPrompt(input);
       res = await runChat(input);
@@ -101,7 +122,7 @@ const ContextProvider = (props) => {
     let newResArray = formattedResponse.split(" ");
     for (let i = 0; i < newResArray.length; i++) {
       const nextWord = newResArray[i];
-      delayPara(i, nextWord + " ");
+      delayPara(i, nextWord + " ", newResArray.length);
     }
     setLoading(false);
     setRecentResult((prev) => [...prev, formattedResponse]);
@@ -111,7 +132,7 @@ const ContextProvider = (props) => {
     // Replace ** with bold tags and * with line breaks
     let newRes = response
       .split("**")
-      .map((part, index) => (index % 2 === 1 ? `<b>${part}</b>` : part))
+      .map((part, index) => (index % 2 === 1 ? `<b>- ${part}</b>` : part))
       .join("")
       .replace(/\*{1}/g, "</br>");
 
@@ -200,8 +221,8 @@ const ContextProvider = (props) => {
     setTextColor,
     navTextColor,
     setNavTextColor,
-    // stopGen,
-    // setStopGen,
+    stopGenerate,
+    setStopGenerate,
     delayPara,
     message,
     setMessage,
@@ -209,11 +230,11 @@ const ContextProvider = (props) => {
     setBot,
     formatResponse,
     escapeHTML,
-    currentBot,
-    setCurrentBot,
     getMessage,
     handleBackground,
     handleStart,
+    chatHistory,
+    setChatHistory,
   };
   return (
     <Context.Provider value={contextValue}>{props.children}</Context.Provider>

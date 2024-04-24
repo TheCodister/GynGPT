@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef, useEffect } from "react";
 import { Messages, Suggestion } from "..";
 import { Context } from "../../context/context";
 const chatPart = () => {
@@ -13,12 +13,22 @@ const chatPart = () => {
     prevPrompt,
     recentResult,
     navTextColor,
-    stopGen,
-    delayPara,
+    stopGenerate,
+    setStopGenerate,
     bot,
     getMessage,
     textcolor,
   } = useContext(Context);
+
+  const messageContainerRef = useRef(null);
+
+  // Scroll to the bottom of the message container whenever resultData changes
+  useEffect(() => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop =
+        messageContainerRef.current.scrollHeight;
+    }
+  }, [resultData]);
   return (
     <div className="w-[50vw] flex flex-col items-center">
       <div className="h-[92%] pt-8 pl-5 pr-5 overflow-auto scroll-smooth">
@@ -72,8 +82,8 @@ const chatPart = () => {
           className="absolute bottom-[3vh] text-[1.5vw] ml-[48vw] cursor-pointer"
           style={{ color: `${navTextColor}` }}
         >
-          {stopGen ? (
-            <p onClick={() => clearTimeout(delayPara)}>⊗</p>
+          {stopGenerate ? (
+            <p onClick={() => setStopGenerate(false)}>⊗</p>
           ) : (
             <p
               onClick={() => {
