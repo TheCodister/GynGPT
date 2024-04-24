@@ -17,7 +17,9 @@ const ContextProvider = (props) => {
   const [background, setBackground] = useState("#3c4b33");
   const [textcolor, setTextColor] = useState("#00ff22");
   const [navTextColor, setNavTextColor] = useState("#00ff22");
-  const [stopGen, setStopGen] = useState(false);
+  const [bot, setBot] = useState(0); //0 is Gemini, 1 is GPT-3.5
+
+  const [message, setMessage] = useState(null);
 
   const delayPara = (index, nextword) =>
     setTimeout(() => {
@@ -64,10 +66,43 @@ const ContextProvider = (props) => {
       const escapedCode = escapeHTML(code);
       return `<pre><code>${escapedCode}</code></pre>`;
     });
+    // Automatically detect and format hyperlinks
     newRes = newRes.replace(
       /\[([^\]]+)\]\((https[^\)]+)\)/g,
       '<a href="$2" target="_blank">$1 ($2)</a>'
     );
+    //Automatically make a table if the response is in table format
+    if (/^\|.*\|$/m.test(newRes)) {
+      let rows = newRes
+        .split("\n")
+        .map((line) => {
+          if (/^\|.*\|$/m.test(line)) {
+            return line
+              .trim()
+              .replace(/^\||\|$/g, "") // Remove the leading and trailing pipes
+              .split("|")
+              .map((cell) => cell.trim());
+          }
+          return null;
+        })
+        .filter((row) => row !== null);
+
+      if (rows.length > 2) {
+        // Assumes there's at least a header, the dashes for alignment, and one data row
+        let tableHTML = `<table>`;
+        tableHTML += `<tr>${rows[0]
+          .map((header) => `<th>${escapeHTML(header)}</th>`)
+          .join("")}</tr>`; // Headers
+        rows.slice(2).forEach((row) => {
+          // Skip the dashes row (index 1)
+          tableHTML += `<tr>${row
+            .map((cell) => `<td>${escapeHTML(cell)}</td>`)
+            .join("")}</tr>`;
+        });
+        tableHTML += `</table>`;
+        newRes = tableHTML;
+      }
+    }
     // Format the list items into sections and lists
     return newRes;
   };
@@ -89,8 +124,11 @@ const ContextProvider = (props) => {
     setRecentPrompt,
     recentPrompt,
     showRes,
+    setShowRes,
     loading,
+    setLoading,
     resultData,
+    setResultData,
     input,
     setInput,
     newChat,
@@ -108,9 +146,13 @@ const ContextProvider = (props) => {
     setTextColor,
     navTextColor,
     setNavTextColor,
-    stopGen,
-    setStopGen,
+    // stopGen,
+    // setStopGen,
     delayPara,
+    message,
+    setMessage,
+    bot,
+    setBot,
   };
   return (
     <Context.Provider value={contextValue}>{props.children}</Context.Provider>

@@ -18,6 +18,7 @@ const chatPart = (props) => {
     stopGen,
     setStopGen,
     delayPara,
+    bot,
   } = useContext(Context);
   return (
     <div className="w-[50vw] flex flex-col items-center">
@@ -61,7 +62,8 @@ const chatPart = (props) => {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault(); // Prevent form submission
-              onSent();
+              if (bot === 1) getMessage();
+              else onSent();
               setInput("");
             }
           }}
@@ -76,8 +78,8 @@ const chatPart = (props) => {
           ) : (
             <p
               onClick={() => {
-                getMessage();
-                onSent();
+                if (bot === 1) getMessage();
+                else onSent();
                 setInput("");
               }}
             >

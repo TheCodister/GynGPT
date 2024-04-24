@@ -1,12 +1,16 @@
 import { Navbar, ChatPart, StartMessage } from "./components";
-import "./App.css";
 import axios from "axios";
 import { useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Context } from "./context/context";
 import { useQuery } from "@tanstack/react-query";
-
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 function App() {
   const {
     start,
@@ -20,6 +24,18 @@ function App() {
     textcolor,
     setTextColor,
     setNavTextColor,
+    message,
+    setMessage,
+    input,
+    bot,
+    setBot,
+    setLoading,
+    setShowRes,
+    delayPara,
+    setResultData,
+    setPrevPrompt,
+    setRecentPrompt,
+    setRecentResult,
   } = useContext(Context);
   const handleStart = () => {
     setStart(true);
@@ -34,18 +50,31 @@ function App() {
   const getMessage = async () => {
     const options = {
       method: "POST",
-      body: JSON.stringify({ message: "Hello how are you" }),
+      body: JSON.stringify({ message: input }),
       headers: {
         "Content-Type": "application/json",
       },
     };
     try {
-      const response = await axios.post(
+      const response = await fetch(
         "http://localhost:3000/completions",
         options
       );
-      const data = await response;
-      console.log(data);
+      const data = await response.json();
+      let res = data.choices[0].message.content;
+      console.log(res);
+      setResultData("");
+      setLoading(true);
+      setShowRes(true);
+      setPrevPrompt((prev) => [...prev, input]);
+      setRecentPrompt(input);
+      let newResArray = res.split(" ");
+      for (let i = 0; i < newResArray.length; i++) {
+        const nextWord = newResArray[i];
+        delayPara(i, nextWord + " ");
+      }
+      setRecentResult((prev) => [...prev, res]);
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -98,6 +127,39 @@ function App() {
             ⚪️
           </Button>
         </ButtonGroup>
+        {start ? (
+          <Box
+            className="absolute"
+            sx={{
+              minWidth: 120,
+              color: `${textcolor}`,
+            }}
+          >
+            <FormControl
+              variant="filled"
+              fullWidth
+              sx={{ color: `${textcolor}` }}
+            >
+              <InputLabel
+                sx={{ color: `${textcolor}` }}
+                id="demo-simple-select-label"
+              >
+                Choose Model
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={bot}
+                label="Choose your bot"
+                onChange={(e) => setBot(e.target.value)}
+                sx={{ color: `${textcolor}` }}
+              >
+                <MenuItem value={0}>Gemini 1.0 pro</MenuItem>
+                <MenuItem value={1}>GPT-3.5 Turbo</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        ) : null}
         {start ? (
           <ChatPart color={textcolor} getMessage={getMessage} />
         ) : (

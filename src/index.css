@@ -43,6 +43,15 @@ pre {
 pre {
   width: 45vw;
 }
+table,
+th,
+td {
+  border: 1px solid;
+  text-align: center;
+}
+td {
+  padding: 10px;
+}
 a:hover {
   color: #2b06ff;
 }
