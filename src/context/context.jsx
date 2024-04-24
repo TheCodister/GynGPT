@@ -18,6 +18,7 @@ const ContextProvider = (props) => {
   const [textcolor, setTextColor] = useState("#00ff22");
   const [navTextColor, setNavTextColor] = useState("#00ff22");
   const [bot, setBot] = useState(0); //0 is Gemini, 1 is GPT-3.5
+  const [currentBot, setCurrentBot] = useState(0);
 
   const [message, setMessage] = useState(null);
 
@@ -32,6 +33,7 @@ const ContextProvider = (props) => {
   };
   const onSent = async (message) => {
     setResultData("");
+    setCurrentBot(0);
     setLoading(true);
     setShowRes(true);
     let res;
@@ -153,6 +155,10 @@ const ContextProvider = (props) => {
     setMessage,
     bot,
     setBot,
+    formatResponse,
+    escapeHTML,
+    currentBot,
+    setCurrentBot,
   };
   return (
     <Context.Provider value={contextValue}>{props.children}</Context.Provider>

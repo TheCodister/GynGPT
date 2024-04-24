@@ -1,6 +1,6 @@
 import { Navbar, ChatPart, StartMessage } from "./components";
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Context } from "./context/context";
@@ -10,7 +10,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 function App() {
   const {
     start,
@@ -36,6 +35,8 @@ function App() {
     setPrevPrompt,
     setRecentPrompt,
     setRecentResult,
+    formatResponse,
+    setCurrentBot,
   } = useContext(Context);
   const handleStart = () => {
     setStart(true);
@@ -68,7 +69,8 @@ function App() {
       setShowRes(true);
       setPrevPrompt((prev) => [...prev, input]);
       setRecentPrompt(input);
-      let newResArray = res.split(" ");
+      let formattedResponse = formatResponse(res);
+      let newResArray = formattedResponse.split(" ");
       for (let i = 0; i < newResArray.length; i++) {
         const nextWord = newResArray[i];
         delayPara(i, nextWord + " ");
@@ -129,7 +131,7 @@ function App() {
         </ButtonGroup>
         {start ? (
           <Box
-            className="absolute"
+            className="absolute left-[17vw]"
             sx={{
               minWidth: 120,
               color: `${textcolor}`,
