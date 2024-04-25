@@ -32,6 +32,13 @@ const themebutton = () => {
       >
         ⚪️
       </Button>
+      <Button
+        onClick={() =>
+          handleBackground("#e33d5e", "#fff", "#e33d5e", "#eeeeee")
+        }
+      >
+        🔴
+      </Button>
     </ButtonGroup>
   );
 };

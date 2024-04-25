@@ -6,7 +6,7 @@ const messages = (props) => {
   const res = props.result;
   const load = props.loading;
   const color = props.color;
-  const { background, textcolor } = useContext(Context);
+  const { background, textcolor, bot } = useContext(Context);
   // const handleName = () => {
   //   if (bot === 0) {
   //     return " (Gemini-1.0)";
@@ -30,10 +30,17 @@ const messages = (props) => {
       </div>
       <div className="flex flex-col items-start mb-10">
         <div className="flex flex-row items-center gap-2">
-          <img
-            src="/image/Logo1.png"
-            className="w-9 h-9 bg-green-950 rounded-full p-1 border-white border-[1px]"
-          />
+          {bot === 2 ? (
+            <img
+              src="/image/CompanyLogo.png"
+              className="w-9 h-9 bg-green-950 rounded-full border-white border-[1px]"
+            />
+          ) : (
+            <img
+              src="/image/Logo1.png"
+              className="w-9 h-9 bg-green-950 rounded-full border-white border-[1px]"
+            />
+          )}
           <h1 className="font-semibold">GynGPT</h1>
         </div>
         {load ? (

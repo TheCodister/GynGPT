@@ -19,15 +19,7 @@ const theme = (color) =>
     },
   });
 const navbar = () => {
-  const {
-    onSent,
-    prevPrompt,
-    setRecentPrompt,
-    newChat,
-    navbackground,
-    navTextColor,
-    chatHistory,
-  } = useContext(Context);
+  const { newChat, navbackground, navTextColor } = useContext(Context);
   // const loadPrompt = async (chat) => {
   //   setRecentPrompt(chat.input);
   //   await onSent(chat.input);

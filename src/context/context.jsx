@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import runChat from "../config/gemini";
+import runSearch from "../config/dwarves";
 
 export const Context = createContext();
 
@@ -13,11 +14,11 @@ const ContextProvider = (props) => {
   const [recentResult, setRecentResult] = useState([]);
   const [start, setStart] = useState(false);
   const [taskbar, setTaskbar] = useState(false);
-  const [navbackground, setNavBackground] = useState("rgb(5 46 22)");
-  const [background, setBackground] = useState("#3c4b33");
-  const [textcolor, setTextColor] = useState("#00ff22");
-  const [navTextColor, setNavTextColor] = useState("#00ff22");
-  const [bot, setBot] = useState(0); //0 is Gemini, 1 is GPT-3.5
+  const [navbackground, setNavBackground] = useState("#e33d5e");
+  const [background, setBackground] = useState("#fff");
+  const [textcolor, setTextColor] = useState("#e33d5e");
+  const [navTextColor, setNavTextColor] = useState("#eeeeee");
+  const [bot, setBot] = useState(2); //0 is Gemini, 1 is GPT-3.5
   const [message, setMessage] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
   const [stopGenerate, setStopGenerate] = useState(false);
@@ -43,7 +44,7 @@ const ContextProvider = (props) => {
           // Last word, setTimeout is done, set stopGenerate to false
           setStopGenerate(false);
         }
-      }, index * 50);
+      }, index * 25);
     } else {
       setResultData((prev) => prev + nextword);
       console.log("stopGenerate is true");
@@ -79,8 +80,12 @@ const ContextProvider = (props) => {
         setPrevPrompt((prev) => [...prev, message]);
         setRecentPrompt(message);
       } else {
-        setPrevPrompt((prev) => [...prev, input]);
-        setRecentPrompt(input);
+        if (input === undefined || input === null || input === "")
+          setInput("Please tell me to resend the message");
+        else {
+          setPrevPrompt((prev) => [...prev, input]);
+          setRecentPrompt(input);
+        }
       }
       const response = await fetch(
         "https://gptclone-backend.onrender.com/completions",
@@ -101,19 +106,48 @@ const ContextProvider = (props) => {
     }
   };
 
+  const onSentDwarves = async (message) => {
+    setResultData("");
+    setLoading(true);
+    setShowRes(true);
+    let res;
+    if (message !== undefined) {
+      res = message;
+      setPrevPrompt((prev) => [...prev, message]);
+      setRecentPrompt(message);
+      res = await runSearch(message);
+    } else {
+      if (input === undefined || input === null || input === "")
+        res = "Please tell me to resend the message";
+      else res = input;
+      setPrevPrompt((prev) => [...prev, input]);
+      setRecentPrompt(input);
+      res = await runSearch(input);
+    }
+    let formattedResponse = formatResponse(res);
+    let newResArray = formattedResponse.split(" ");
+    for (let i = 0; i < newResArray.length; i++) {
+      const nextWord = newResArray[i];
+      delayPara(i, nextWord + " ", newResArray.length);
+    }
+    setLoading(false);
+    setRecentResult((prev) => [...prev, formattedResponse]);
+  };
+
   const onSent = async (message) => {
     setResultData("");
     setLoading(true);
     setShowRes(true);
     let res;
-    let currentInput;
     if (message !== undefined) {
-      currentInput = message;
+      res = message;
       setPrevPrompt((prev) => [...prev, message]);
       setRecentPrompt(message);
       res = await runChat(message);
     } else {
-      currentInput = input;
+      if (input === undefined || input === null || input === "")
+        res = "Please tell me to resend the message";
+      else res = input;
       setPrevPrompt((prev) => [...prev, input]);
       setRecentPrompt(input);
       res = await runChat(input);
@@ -196,6 +230,7 @@ const ContextProvider = (props) => {
     prevPrompt,
     setPrevPrompt,
     onSent,
+    onSentDwarves,
     setRecentPrompt,
     recentPrompt,
     showRes,

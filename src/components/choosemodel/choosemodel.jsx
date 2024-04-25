@@ -30,7 +30,8 @@ const choosemodel = () => {
           onChange={(e) => setBot(e.target.value)}
           sx={{ color: `${textcolor}` }}
         >
-          <MenuItem value={0}>Gemini 1.0 pro</MenuItem>
+          <MenuItem value={2}>Dwarves Bot 1.0</MenuItem>
+          <MenuItem value={0}>Gemini 1.5 Pro</MenuItem>
           <MenuItem value={1}>GPT-3.5 Turbo</MenuItem>
         </Select>
       </FormControl>

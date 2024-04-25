@@ -23,16 +23,16 @@ const startMessage = () => {
   const { background, textcolor, handleStart } = useContext(Context);
   const [text] = useTypewriter({
     words: [
-      `Welcome to GynGPT chatbot created by using OpenAI's API.\nHow can I help you today?`,
+      `Welcome to GynGPT chatbot created by training with data from \nDwarves Foundation.\nHow can I help you today?`,
     ],
     loop: 1,
     typeSpeed: 50,
     deleteSpeed: 100,
   });
   return (
-    <div className="w-3/5 flex mt-[11vh] items-center text-left flex-col">
+    <div className="w-4/5 flex mt-[11vh] items-center text-left flex-col">
       <pre
-        className="font-[Montserrat] text-left w-full text-[4vw] h-[62vh] leading-relaxed font-bold"
+        className="font-[Montserrat] text-left w-full text-[4vw] h-[62vh] leading-relaxed font-bold mb-14"
         style={{ backgroundColor: `${background}`, color: `${textcolor}` }}
       >
         {text}

@@ -18,6 +18,7 @@ const chatPart = () => {
     bot,
     getMessage,
     textcolor,
+    onSentDwarves,
   } = useContext(Context);
 
   const messageContainerRef = useRef(null);
@@ -61,7 +62,8 @@ const chatPart = () => {
       </div>
       <form>
         <input
-          className="w-[50vw] h-[6vh] text-[#fff] rounded-[3vw] p-4 bg-zinc-800 focus:outline-none ring-2 ring-white focus:ring-[#00ff22]"
+          className="w-[50vw] h-[6vh] text-[#fff] rounded-[3vw] p-4 bg-neutral-900 focus:outline-none focus:bg-zinc-800"
+          style={{ focus: { outline: `${textcolor}` } }}
           placeholder="Ask me anything..."
           type="text"
           onChange={(e) => {
@@ -72,6 +74,7 @@ const chatPart = () => {
             if (e.key === "Enter") {
               e.preventDefault(); // Prevent form submission
               if (bot === 1) getMessage();
+              else if (bot === 2) onSentDwarves();
               else onSent();
               setInput("");
             }
@@ -88,6 +91,7 @@ const chatPart = () => {
             <p
               onClick={() => {
                 if (bot === 1) getMessage();
+                else if (bot === 2) onSentDwarves();
                 else onSent();
                 setInput("");
               }}

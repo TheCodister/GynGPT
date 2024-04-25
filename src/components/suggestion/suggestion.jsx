@@ -13,9 +13,9 @@ const suggestion = (props) => {
     setInput("");
   };
   const suggestions = [
-    "What is ReactJS",
-    "Can you list some of the option for me to cook?",
-    "Where to travel in Sounthest Asia?",
+    "How are you hiring in Dwarves Foundation?",
+    "Security Rules at Dwarves Foundation?",
+    "What is React?",
     "What is Relational Database",
   ];
   return (
