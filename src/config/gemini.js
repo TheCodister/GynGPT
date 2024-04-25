@@ -45,7 +45,6 @@ async function runChat(propmt) {
     });
 
     const result = await chat.sendMessage(propmt);
-    const history = chat.getHistory();
     const response = result.response;
     console.log(response.text());
     return response.text();

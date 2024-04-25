@@ -8,9 +8,6 @@ const theme = (color) =>
     palette: {
       primary: {
         main: color,
-        // light: will be calculated from palette.primary.main,
-        // dark: will be calculated from palette.primary.main,
-        // contrastText: will be calculated to contrast with palette.primary.main
       },
       secondary: {
         main: "#E0C2FF",

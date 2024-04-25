@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import runChat from "../config/gemini";
 import runSearch from "../config/dwarves";
+import runData from "../config/dwarves";
 
 export const Context = createContext();
 

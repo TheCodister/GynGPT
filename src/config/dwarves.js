@@ -8,7 +8,7 @@ import dataset from "../Dataset/dataset";
 const MODEL_NAME = "gemini-1.5-pro-latest";
 const API_KEY = "AIzaSyDgRQus14xtlZ2l3kUf0IJxMYWO1oyKg2w";
 
-async function runData() {
+export async function runData() {
   try {
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: MODEL_NAME });
