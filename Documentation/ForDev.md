@@ -31,9 +31,9 @@ cd GynGPT
 npm install
 ```
 
-1. **Running the Application:** Since the backend of this application has already been deployed, run `npm run dev`. Then, follow the link provided in the terminal to view the UI.
+3. **Running the Application:** Since the backend of this application has already been deployed, run `npm run dev`. Then, follow the link provided in the terminal to view the UI.
 
-2. **Components:**
+4. **Components:**
 
 - **Chatpart:** This is where the output of the prompt and result will be displayed.
 - **Choosemodel:** Click here to select the model you want to use.
