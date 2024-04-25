@@ -2,21 +2,22 @@ import { useContext } from "react";
 import { Context } from "../../context/context";
 
 const suggestion = (props) => {
-  const { setRecentPrompt, setInput, onSent, bot, getMessage } =
+  const { setRecentPrompt, setInput, onSent, bot, getMessage, onSentDwarves } =
     useContext(Context);
   const color = props.color;
   const handleClick = (suggestion) => {
     setRecentPrompt(suggestion);
     if (bot === 1) {
       getMessage(suggestion);
-    } else onSent(suggestion);
+    } else if (bot === 2) onSentDwarves(suggestion);
+    else onSent(suggestion);
     setInput("");
   };
   const suggestions = [
-    "How are you hiring in Dwarves Foundation?",
+    "How are you hiring?",
     "Tell me a preview about dwarves foundation handbook?",
-    "What is React?",
-    "What is Relational Database",
+    "Where you work?",
+    "What is the company benefits and perks",
   ];
   return (
     <div className="flex flex-col items-center mt-8">
