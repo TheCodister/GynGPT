@@ -3,7 +3,7 @@ import { Messages, Suggestion } from "..";
 import { Context } from "../../context/context";
 const chatPart = () => {
   const {
-    onSent,
+    onSentGemini,
     recentPrompt,
     showRes,
     loading,
@@ -75,7 +75,7 @@ const chatPart = () => {
               e.preventDefault(); // Prevent form submission
               if (bot === 1) getMessage();
               else if (bot === 2) onSentDwarves();
-              else onSent();
+              else onSentGemini();
               setInput("");
             }
           }}
@@ -92,7 +92,7 @@ const chatPart = () => {
               onClick={() => {
                 if (bot === 1) getMessage();
                 else if (bot === 2) onSentDwarves();
-                else onSent();
+                else onSentGemini();
                 setInput("");
               }}
             >

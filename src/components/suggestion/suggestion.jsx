@@ -2,15 +2,21 @@ import { useContext } from "react";
 import { Context } from "../../context/context";
 
 const suggestion = (props) => {
-  const { setRecentPrompt, setInput, onSent, bot, getMessage, onSentDwarves } =
-    useContext(Context);
+  const {
+    setRecentPrompt,
+    setInput,
+    onSentGemini,
+    bot,
+    getMessage,
+    onSentDwarves,
+  } = useContext(Context);
   const color = props.color;
   const handleClick = (suggestion) => {
     setRecentPrompt(suggestion);
     if (bot === 1) {
       getMessage(suggestion);
     } else if (bot === 2) onSentDwarves(suggestion);
-    else onSent(suggestion);
+    else onSentGemini(suggestion);
     setInput("");
   };
   const suggestions = [

@@ -87,6 +87,7 @@ const ContextProvider = (props) => {
           setRecentPrompt(input);
         }
       }
+
       const response = await fetch(
         "https://gptclone-backend.onrender.com/completions",
         options
@@ -134,7 +135,7 @@ const ContextProvider = (props) => {
     setRecentResult((prev) => [...prev, formattedResponse]);
   };
 
-  const onSent = async (message) => {
+  const onSentGemini = async (message) => {
     setResultData("");
     setLoading(true);
     setShowRes(true);
@@ -229,7 +230,7 @@ const ContextProvider = (props) => {
   const contextValue = {
     prevPrompt,
     setPrevPrompt,
-    onSent,
+    onSentGemini,
     onSentDwarves,
     setRecentPrompt,
     recentPrompt,
