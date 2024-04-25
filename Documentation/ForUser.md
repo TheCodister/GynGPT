@@ -1,4 +1,4 @@
-**Welcome to my website!**
+# Welcome to my website!
 
 To access my website, follow the link: [Gyn GPT](https://gyn-gpt.vercel.app/)
 
