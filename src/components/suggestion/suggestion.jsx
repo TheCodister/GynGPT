@@ -14,7 +14,7 @@ const suggestion = (props) => {
   };
   const suggestions = [
     "How are you hiring in Dwarves Foundation?",
-    "Security Rules at Dwarves Foundation?",
+    "Tell me a preview about dwarves foundation handbook?",
     "What is React?",
     "What is Relational Database",
   ];
