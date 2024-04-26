@@ -11,9 +11,9 @@ import { runData } from "./config/dwarves";
 function App() {
   const { start, taskbar, setTaskbar, navbackground, background, textcolor } =
     useContext(Context);
-  if (start) {
-    runData();
-  }
+  const startTrain = async () => {
+    const model1 = await runData();
+  };
   return (
     <div
       className="flex flex-row w-screen h-screen"
@@ -30,7 +30,7 @@ function App() {
       <div className="flex justify-center w-full">
         <ThemeButton />
         {start ? <ChooseModel /> : null}
-        {start ? <ChatPart /> : <StartMessage />}
+        {start ? <ChatPart /> : <StartMessage onClick={startTrain()} />}
       </div>
     </div>
   );

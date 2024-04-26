@@ -8,6 +8,8 @@ import dataset from "../Dataset/dataset";
 const MODEL_NAME = "gemini-1.5-pro-latest";
 const API_KEY = "AIzaSyDgRQus14xtlZ2l3kUf0IJxMYWO1oyKg2w";
 
+let model1;
+
 export async function runData() {
   try {
     const genAI = new GoogleGenerativeAI(API_KEY);
@@ -61,19 +63,28 @@ export async function runData() {
       generationConfig,
       safetySettings,
     });
+    model1 = result;
     return result;
   } catch (error) {
     console.error(error);
     return "Sorry, I am not able to respond to that.";
   }
 }
-
-const model1 = await runData();
-
 async function runSearch(propmt) {
-  const result = await model1.sendMessage(propmt);
-  const response = result.response;
-  console.log(response.text());
-  return response.text();
+  if (!model1) {
+    // If model1 is not defined, runData first
+    await runData();
+  }
+
+  // Now, model1 should be defined, proceed with the search
+  try {
+    const result = await model1.sendMessage(propmt);
+    const response = result.response;
+    console.log(response.text());
+    return response.text();
+  } catch (error) {
+    console.error(error);
+    return "Sorry, I am not able to respond to that.";
+  }
 }
 export default runSearch;
