@@ -71,7 +71,7 @@ const chatPart = () => {
             e.preventDefault();
           }}
           onKeyDown={(e) => {
-            if (e.key === 13 && !e.shiftKey) {
+            if (e.key === "Enter") {
               e.preventDefault(); // Prevent form submission
               if (bot === 1) getMessage();
               else if (bot === 2) onSentDwarves();
