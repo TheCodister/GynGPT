@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import runChat from "../config/gemini";
 import runSearch from "../config/dwarves";
-import runData from "../config/dwarves";
 
 export const Context = createContext();
 
@@ -95,19 +94,18 @@ const ContextProvider = (props) => {
       );
       const data = await response.json();
       let res = data.choices[0].message.content;
-      let formattedResponse = formatResponse(res);
-      let newResArray = formattedResponse.split(" ");
+      let newResArray = res.split(" ");
       for (let i = 0; i < newResArray.length; i++) {
         const nextWord = newResArray[i];
         delayPara(i, nextWord + " ", newResArray.length);
       }
       setLoading(false);
-      setRecentResult((prev) => [...prev, formattedResponse]);
+      setRecentResult((prev) => [...prev, res]);
     } catch (e) {
       console.log(e);
     }
   };
-
+  //Handle the message sent to the Dwarves
   const onSentDwarves = async (message) => {
     setResultData("");
     setLoading(true);
@@ -126,16 +124,15 @@ const ContextProvider = (props) => {
       setRecentPrompt(input);
       res = await runSearch(input);
     }
-    let formattedResponse = formatResponse(res);
-    let newResArray = formattedResponse.split(" ");
+    let newResArray = res.split(" ");
     for (let i = 0; i < newResArray.length; i++) {
       const nextWord = newResArray[i];
       delayPara(i, nextWord + " ", newResArray.length);
     }
     setLoading(false);
-    setRecentResult((prev) => [...prev, formattedResponse]);
+    setRecentResult((prev) => [...prev, res]);
   };
-
+  //Handle the response from Gemini
   const onSentGemini = async (message) => {
     setResultData("");
     setLoading(true);
@@ -154,69 +151,69 @@ const ContextProvider = (props) => {
       setRecentPrompt(input);
       res = await runChat(input);
     }
-    let formattedResponse = formatResponse(res);
-    let newResArray = formattedResponse.split(" ");
+    // let formattedResponse = formatResponse(res);
+    let newResArray = res.split(" ");
     for (let i = 0; i < newResArray.length; i++) {
       const nextWord = newResArray[i];
       delayPara(i, nextWord + " ", newResArray.length);
     }
     setLoading(false);
-    setRecentResult((prev) => [...prev, formattedResponse]);
+    setRecentResult((prev) => [...prev, res]);
   };
 
-  const formatResponse = (response) => {
-    // Replace ** with bold tags and * with line breaks
-    let newRes = response
-      .split("**")
-      .map((part, index) => (index % 2 === 1 ? `<b>- ${part}</b>` : part))
-      .join("")
-      .replace(/\*{1}/g, "</br>");
+  // const formatResponse = (response) => {
+  //   // Replace ** with bold tags and * with line breaks
+  //   let newRes = response
+  //     .split("**")
+  //     .map((part, index) => (index % 2 === 1 ? `<b>- ${part}</b>` : part))
+  //     .join("")
+  //     .replace(/\*{1}/g, "</br>");
 
-    // Automatically detect and format code blocks wrapped in triple backticks
-    newRes = newRes.replace(/```(.*?)```/gs, (match, code) => {
-      const escapedCode = escapeHTML(code);
-      return `<pre><code>${escapedCode}</code></pre>`;
-    });
-    // Automatically detect and format hyperlinks
-    newRes = newRes.replace(
-      /\[([^\]]+)\]\((https[^\)]+)\)/g,
-      '<a href="$2" target="_blank">$1 ($2)</a>'
-    );
-    //Automatically make a table if the response is in table format
-    if (/^\|.*\|$/m.test(newRes)) {
-      let rows = newRes
-        .split("\n")
-        .map((line) => {
-          if (/^\|.*\|$/m.test(line)) {
-            return line
-              .trim()
-              .replace(/^\||\|$/g, "") // Remove the leading and trailing pipes
-              .split("|")
-              .map((cell) => cell.trim());
-          }
-          return null;
-        })
-        .filter((row) => row !== null);
+  //   // Automatically detect and format code blocks wrapped in triple backticks
+  //   newRes = newRes.replace(/```(.*?)```/gs, (match, code) => {
+  //     const escapedCode = escapeHTML(code);
+  //     return `<pre><code>${escapedCode}</code></pre>`;
+  //   });
+  //   // Automatically detect and format hyperlinks
+  //   newRes = newRes.replace(
+  //     /\[([^\]]+)\]\((https[^\)]+)\)/g,
+  //     '<a href="$2" target="_blank">$1 ($2)</a>'
+  //   );
+  //   //Automatically make a table if the response is in table format
+  //   if (/^\|.*\|$/m.test(newRes)) {
+  //     let rows = newRes
+  //       .split("\n")
+  //       .map((line) => {
+  //         if (/^\|.*\|$/m.test(line)) {
+  //           return line
+  //             .trim()
+  //             .replace(/^\||\|$/g, "") // Remove the leading and trailing pipes
+  //             .split("|")
+  //             .map((cell) => cell.trim());
+  //         }
+  //         return null;
+  //       })
+  //       .filter((row) => row !== null);
 
-      if (rows.length > 2) {
-        // Assumes there's at least a header, the dashes for alignment, and one data row
-        let tableHTML = `<table>`;
-        tableHTML += `<tr>${rows[0]
-          .map((header) => `<th>${escapeHTML(header)}</th>`)
-          .join("")}</tr>`; // Headers
-        rows.slice(2).forEach((row) => {
-          // Skip the dashes row (index 1)
-          tableHTML += `<tr>${row
-            .map((cell) => `<td>${escapeHTML(cell)}</td>`)
-            .join("")}</tr>`;
-        });
-        tableHTML += `</table>`;
-        newRes = tableHTML;
-      }
-    }
-    // Format the list items into sections and lists
-    return newRes;
-  };
+  //     if (rows.length > 2) {
+  //       // Assumes there's at least a header, the dashes for alignment, and one data row
+  //       let tableHTML = `<table>`;
+  //       tableHTML += `<tr>${rows[0]
+  //         .map((header) => `<th>${escapeHTML(header)}</th>`)
+  //         .join("")}</tr>`; // Headers
+  //       rows.slice(2).forEach((row) => {
+  //         // Skip the dashes row (index 1)
+  //         tableHTML += `<tr>${row
+  //           .map((cell) => `<td>${escapeHTML(cell)}</td>`)
+  //           .join("")}</tr>`;
+  //       });
+  //       tableHTML += `</table>`;
+  //       newRes = tableHTML;
+  //     }
+  //   }
+  //   // Format the list items into sections and lists
+  //   return newRes;
+  // };
 
   // Function to escape HTML special characters to prevent XSS and ensure correct display
   const escapeHTML = (str) => {
@@ -265,7 +262,6 @@ const ContextProvider = (props) => {
     setMessage,
     bot,
     setBot,
-    formatResponse,
     escapeHTML,
     getMessage,
     handleBackground,

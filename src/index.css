@@ -36,7 +36,7 @@ body {
 code,
 pre {
   background-color: #0f0f0f; /* Light gray background */ /* Light border for distinction */
-  padding: 8px; /* Padding for visual space */
+  padding: 1px; /* Padding for visual space */
   white-space: pre-wrap; /* Ensures that pre-formatted text wraps */
   color: #00ff22; /* Text color */
 }
@@ -54,4 +54,7 @@ td {
 }
 a:hover {
   color: #2b06ff;
+}
+p {
+  font-weight: 450;
 }

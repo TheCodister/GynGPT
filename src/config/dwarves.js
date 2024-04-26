@@ -15,10 +15,10 @@ export async function runData() {
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: MODEL_NAME });
     const generationConfig = {
-      temperature: 0.9,
+      temperature: 1,
       topK: 1,
       topP: 1,
-      maxOutputTokens: 2048,
+      maxOutputTokens: 600,
     };
     const safetySettings = [
       {
@@ -38,21 +38,6 @@ export async function runData() {
         threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
       },
     ];
-    // console.log(dataset);
-    // const chat = model.startChat({
-    //   history: [
-    //     {
-    //       role: "user",
-    //       parts: dataset,
-    //     },
-    //   ],
-    //   generationConfig,
-    //   safetySettings,
-    // });
-    // const result = await chat.sendMessage(propmt);
-    // const response = result.response;
-    // console.log(response.text());
-    // return response.text();
     const result = model.startChat({
       history: [
         {

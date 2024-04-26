@@ -29,7 +29,7 @@ const chatPart = () => {
       messageContainerRef.current.scrollTop =
         messageContainerRef.current.scrollHeight;
     }
-  }, [resultData]);
+  }, [resultData, stopGenerate]);
   return (
     <div className="w-[50vw] flex flex-col items-center">
       <div className="h-[92%] pt-8 pl-5 pr-5 overflow-auto scroll-smooth">

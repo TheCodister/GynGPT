@@ -1,12 +1,13 @@
 import BeatLoader from "react-spinners/BeatLoader";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Context } from "../../context/context";
+import Markdown from "markdown-to-jsx";
 const messages = (props) => {
   const propmt = props.text;
   const res = props.result;
   const load = props.loading;
   const color = props.color;
-  const { background, textcolor, bot } = useContext(Context);
+  const { bot } = useContext(Context);
   // const handleName = () => {
   //   if (bot === 0) {
   //     return " (Gemini-1.0)";
@@ -47,7 +48,7 @@ const messages = (props) => {
           <BeatLoader className="ml-11" color={color} />
         ) : (
           <div className="ml-11">
-            <pre
+            {/* <pre
               style={{
                 backgroundColor: `${background}`,
                 fontFamily: `'Montserrat', sans-serif`,
@@ -55,7 +56,8 @@ const messages = (props) => {
                 padding: "0px",
               }}
               dangerouslySetInnerHTML={{ __html: res }}
-            ></pre>
+            ></pre> */}
+            <Markdown options={{ wrapper: "article" }}>{res}</Markdown>
           </div>
         )}
       </div>
