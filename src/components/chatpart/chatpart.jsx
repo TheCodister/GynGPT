@@ -62,7 +62,7 @@ const chatPart = () => {
       </div>
       <form>
         <input
-          className="w-[50vw] h-[6vh] text-[#fff] rounded-[3vw] p-4 bg-neutral-900 focus:outline-none focus:bg-zinc-800"
+          className="w-[50vw] h-[6vh] text-[#fff] rounded-[1vw] p-4 bg-neutral-900 focus:outline-none focus:bg-zinc-800"
           style={{ focus: { outline: `${textcolor}` } }}
           placeholder="Ask me anything..."
           type="text"
@@ -71,7 +71,7 @@ const chatPart = () => {
             e.preventDefault();
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
+            if (e.key === 13 && !e.shiftKey) {
               e.preventDefault(); // Prevent form submission
               if (bot === 1) getMessage();
               else if (bot === 2) onSentDwarves();
