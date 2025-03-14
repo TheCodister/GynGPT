@@ -1,12 +1,12 @@
 import {
   GoogleGenerativeAI,
-  HarmCategory,
   HarmBlockThreshold,
+  HarmCategory,
 } from "@google/generative-ai";
 import dataset from "../Dataset/dataset";
 
-const MODEL_NAME = "gemini-1.5-pro-latest";
-const API_KEY = "AIzaSyDgRQus14xtlZ2l3kUf0IJxMYWO1oyKg2w";
+const MODEL_NAME = import.meta.env.VITE_GEMINI_MODEL;
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 let model1;
 
@@ -65,10 +65,8 @@ async function runSearch(propmt) {
   try {
     const result = await model1.sendMessage(propmt);
     const response = result.response;
-    console.log(response.text());
     return response.text();
   } catch (error) {
-    console.error(error);
     return "Sorry, I am not able to respond to that.";
   }
 }
